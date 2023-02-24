@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Crypt</title>
+    <!-- 加载crypto-js库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <!-- 加载Bootstrap库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <div class="row">
+        <!-- <div class="col-sm-12"> -->
+          <!-- <h1 class="text-center mb-4">Crypt</h1> -->
+        </div>
+      <!-- </div> -->
+      <div class="row">
+        <div class="col-sm-12 col-md-6">
+          <form>
+            <div class="form-group">
+              <label for="password">Password：</label>
+              <input type="password" id="password" name="password" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="plaintext">Input：</label>
+              <textarea id="plaintext" name="plaintext" rows="5" cols="50" class="form-control"></textarea>
+            </div>
+            <div class="form-group">
+              <input type="button" value="Encrypt" onclick="encrypt()" class="btn btn-primary">
+              <input type="button" value="Decrypt" onclick="decrypt()" class="btn btn-primary">
+            </div>
+            <div class="form-group">
+              
+            </div>
+          </form>
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <form>
+            <div class="form-group">
+              <label for="result">Output：</label>
+              <textarea id="result" name="result" rows="9" cols="50" class="form-control" readonly></textarea>
+            </div>
+            <div class="form-group">
+              <input type="button" value="Copy" onclick="copy()" class="btn btn-secondary">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function encrypt() {
+        var password = document.getElementById("password").value;
+        var plaintext = document.getElementById("plaintext").value;
+        var ciphertext = CryptoJS.AES.encrypt(plaintext, password).toString();
+        document.getElementById("result").value = ciphertext;
+      }
+
+      function decrypt() {
+        var password = document.getElementById("password").value;
+        var ciphertext = document.getElementById("result").value;
+        try {
+          var bytes = CryptoJS.AES.decrypt(ciphertext, password);
+          var decrypted = bytes.toString(CryptoJS.enc.Utf8);
+          document.getElementById("result").value = decrypted;
+        } catch (e) {
+          alert("Fail");
+        }
+      }
+
+      function copy() {
+        var result = document.getElementById("result");
+        result.select();
+        document.execCommand("copy");
+      }
+    </script>
+  </body>
+</html>
